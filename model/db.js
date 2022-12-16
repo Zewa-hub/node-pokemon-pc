@@ -1,13 +1,15 @@
 import { Sequelize } from 'sequelize'
+import config from '../config/config'
 //todo : mettre en variable d'environnement + mettre une db local
 
 
 const Database = new Sequelize(
     "userAPI",
-    "doggocoptere",
-    "Abdel123",
+    config.DATABASE_USERNAME,
+    config.DATABASE_PASSWORD,
     {
-        host : "db4free.net",
+        host : config.DATABASE_HOST,
+        port: config.MYSQL_PORT,
         dialect:"mysql"
     });
 
