@@ -1,10 +1,10 @@
 import { Sequelize } from 'sequelize'
-import config from '../config/config'
+import config from '../config/config.js'
 //todo : mettre en variable d'environnement + mettre une db local
 
 
 const Database = new Sequelize(
-    "userAPI",
+    config.DATABASE,
     config.DATABASE_USERNAME,
     config.DATABASE_PASSWORD,
     {
@@ -20,7 +20,7 @@ const Database = new Sequelize(
         console.log("Database is ready")
     }
     catch (error){
-        console.log("database kaka")
+        console.log("database is down")
     }
 })()
 

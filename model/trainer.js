@@ -32,7 +32,7 @@ Trainer.init({
     },
     roles: {
         type: DataTypes.STRING(50),
-        allowNull: false
+        defaultValue:"READER"
     }
 },
     {
