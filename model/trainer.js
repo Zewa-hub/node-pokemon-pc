@@ -20,7 +20,8 @@ Trainer.init({
     },
     login: {
         type: DataTypes.STRING(15),
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     password: {
         type: DataTypes.STRING(50),
@@ -32,7 +33,7 @@ Trainer.init({
     },
     roles: {
         type: DataTypes.STRING(50),
-        defaultValue:"READER"
+        defaultValue: "USER"
     }
 },
     {
