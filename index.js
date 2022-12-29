@@ -20,13 +20,13 @@ OauthRouter.post("/oauth/token",[handlersSecurity.getToken])
 
 OauthRouter.get("/authorize",[handlersSecurity.authorize])
 
-app.get('/trainer/:id', [handlersSecurity.checkAuthorization,handlersRoute.getTrainer])
+app.get('/trainer/:id', [handlersRoute.getTrainer])
 
 app.post('/register', [handlersRoute.createTrainer])
 
-app.patch('/user/:id', [handlersRoute.modifyTrainer])
+app.patch('/trainer/:id', [handlersRoute.modifyTrainer])
 
-app.delete('/user/:id', [handlersRoute.deleteTrainer])
+app.delete('/trainer/:id', [handlersRoute.deleteTrainer])
 
 
 app.use((req, res, next) => {

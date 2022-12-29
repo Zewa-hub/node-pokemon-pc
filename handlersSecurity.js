@@ -9,6 +9,7 @@ const acceptedClientSecret = 'OAUTH_TEST_APP_SECRET'
 
 const getToken = async (req,res) => {
     const queryParams= req.query
+    //adding scope verificati on
     const {login, password, scopes} = req.body
 
     if (queryParams.client_id !== acceptedClientId
@@ -18,7 +19,7 @@ const getToken = async (req,res) => {
             error: 'Application is not authorized'
         })
     }
-    if (!queryParams.code){
+    if (!queryParams.authorization_code){
         return res.status(400).send({
             error: 'No authorization code provided'
         })
