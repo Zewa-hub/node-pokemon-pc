@@ -1,39 +1,30 @@
-import config from "./config/config.js";
-import Trainer from "./model/trainer.js";
+import express, { Router } from 'express';
+import config from './config/config.js';
+import handlersSecurity from './handlersSecurity.js';
+import handlersTrainers from './handlersTrainers.js';
 
-import express from 'express';
-import jwt from 'jsonwebtoken';
-import bcrypt from "bcrypt";
+const OauthRouter = Router();
+const app = express();
 
-import { Router } from "express";
-import handlersSecurity from "./handlersSecurity.js";
-import handlersRoute from "./handlersRoute.js";
+app.use(express.json());
+app.use(OauthRouter);
 
-const OauthRouter = Router()
-const app = express()
+OauthRouter.post('/oauth/token', [handlersSecurity.getToken]);
 
+OauthRouter.get('/authorize', [handlersSecurity.authorize]);
 
-app.use(express.json())
-app.use(OauthRouter)
+app.get('/trainer/:id', [handlersSecurity.checkAuthorization, handlersTrainers.getTrainer]);
 
-OauthRouter.post("/oauth/token",[handlersSecurity.getToken])
+app.post('/register', [handlersTrainers.createTrainer]);
 
-OauthRouter.get("/authorize",[handlersSecurity.authorize])
+app.patch('/trainer/:id', [handlersSecurity.checkAuthorization, handlersSecurity.isUserAuthorized, handlersTrainers.modifyTrainer]);
 
-app.get('/trainer/:id', [handlersRoute.getTrainer])
+app.delete('/trainer/:id', [handlersSecurity.checkAuthorization, handlersSecurity.isUserAuthorized, handlersTrainers.deleteTrainer]);
 
-app.post('/register', [handlersRoute.createTrainer])
-
-app.patch('/trainer/:id', [handlersRoute.modifyTrainer])
-
-app.delete('/trainer/:id', [handlersRoute.deleteTrainer])
-
-
-app.use((req, res, next) => {
-    res.status(404).send('URL not found')
-})
+app.use((req, res) => {
+  res.status(404).send('URL not found');
+});
 
 app.listen(config.NODE_APP_PORT, () => {
-    console.log(`The server is up on port ${config.NODE_APP_PORT}`)
-})
-
+  console.log(`The server is up on port ${config.NODE_APP_PORT}`);
+});
