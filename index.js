@@ -2,6 +2,7 @@ import express, { Router } from 'express';
 import config from './config/config.js';
 import handlersSecurity from './handlersSecurity.js';
 import handlersTrainers from './handlersTrainers.js';
+import handlersPokemon from './handlersPokemon.js';
 
 const OauthRouter = Router();
 const app = express();
@@ -20,6 +21,12 @@ app.post('/register', [handlersTrainers.createTrainer]);
 app.patch('/trainer/:id', [handlersSecurity.checkAuthorization, handlersSecurity.isUserAuthorized, handlersTrainers.modifyTrainer]);
 
 app.delete('/trainer/:id', [handlersSecurity.checkAuthorization, handlersSecurity.isUserAuthorized, handlersTrainers.deleteTrainer]);
+
+app.get('/pokemon', [handlersSecurity.checkAuthorization,handlersPokemon.getPokemon]);
+
+app.patch('/pokemon/:id', [handlersSecurity.checkAuthorization, handlersSecurity.isUserAuthorizedPokemon, handlersPokemon.modifyPokemon]);
+
+app.delete('/pokemon/:id', [handlersSecurity.checkAuthorization, handlersSecurity.isUserAuthorizedPokemon, handlersPokemon.deletePokemon]);
 
 app.use((req, res) => {
   res.status(404).send('URL not found');

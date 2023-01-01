@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import Trainer from './model/trainer.js';
+import { Trainer, Pokemon } from './model/trainer.js';
 
 const acceptedScopes = ['USER', 'ADMIN'];
 const authorizationCode = 'OAUTH_TEST_APP_ACCEPTED';
@@ -106,6 +106,22 @@ const isUserAuthorized = async (req, res, next) => {
   }
   next();
 };
+
+const isUserAuthorizedPokemon = async (req, res, next) => {
+  const { id } = req.params;
+  const pokemon = await Pokemon.findOne({
+    where: {
+      id,
+    },
+  });
+  if (!pokemon) {
+    return res.status(404).send('pokemon not found');
+  }
+  if (pokemon.trainerId !== parseInt(res.locals.requestor.id, 10) && !res.locals.isAdmin) {
+    return res.status(403).send({ error: "You don't have the privilege to do this action" });
+  }
+  next();
+};
 export default {
-  checkAuthorization, getToken, authorize, isUserAuthorized,
+  checkAuthorization, getToken, authorize, isUserAuthorized, isUserAuthorizedPokemon,
 };

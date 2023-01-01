@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import sequelize from 'sequelize';
-import Trainer from './model/trainer.js';
+import {Trainer} from './model/trainer.js';
 
 const getTrainer = async (req, res) => {
   const { id } = req.params;
@@ -9,6 +9,7 @@ const getTrainer = async (req, res) => {
       where: {
         id,
       },
+      include: ['pokemon']
     });
     if (!trainer) {
       return res.status(404).send('Trainer not found');
