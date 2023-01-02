@@ -1,8 +1,9 @@
 import express, { Router } from 'express';
 import config from './config/config.js';
-import handlersSecurity from './handlersSecurity.js';
-import handlersTrainers from './handlersTrainers.js';
-import handlersPokemon from './handlersPokemon.js';
+import handlersSecurity from './handlers/handlersSecurity.js';
+import handlersTrainers from './handlers/handlersTrainers.js';
+import handlersPokemon from './handlers/handlersPokemon.js';
+import handlersExchange from './handlers/handlersExchange.js';
 
 const OauthRouter = Router();
 const app = express();
@@ -22,12 +23,15 @@ app.patch('/trainer/:id', [handlersSecurity.checkAuthorization, handlersSecurity
 
 app.delete('/trainer/:id', [handlersSecurity.checkAuthorization, handlersSecurity.isUserAuthorized, handlersTrainers.deleteTrainer]);
 
-app.get('/pokemon', [handlersSecurity.checkAuthorization,handlersPokemon.getPokemon]);
+app.get('/pokemon', [handlersSecurity.checkAuthorization, handlersPokemon.getPokemon]);
 
 app.patch('/pokemon/:id', [handlersSecurity.checkAuthorization, handlersSecurity.isUserAuthorizedPokemon, handlersPokemon.modifyPokemon]);
 
 app.delete('/pokemon/:id', [handlersSecurity.checkAuthorization, handlersSecurity.isUserAuthorizedPokemon, handlersPokemon.deletePokemon]);
 
+app.post('/exchange/:id', [handlersSecurity.checkAuthorization, handlersExchange.exchangePurpose]);
+
+app.patch('/exchange/:id', [handlersSecurity.checkAuthorization, handlersExchange.exchangeResponse]);
 app.use((req, res) => {
   res.status(404).send('URL not found');
 });

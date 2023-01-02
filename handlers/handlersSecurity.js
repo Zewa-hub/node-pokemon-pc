@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Trainer, Pokemon } from './model/trainer.js';
+import { Trainer, Pokemon } from '../model/trainer.js';
 
 const acceptedScopes = ['USER', 'ADMIN'];
 const authorizationCode = 'OAUTH_TEST_APP_ACCEPTED';

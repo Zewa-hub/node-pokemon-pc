@@ -1,6 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { DataTypes, Model } from 'sequelize';
 import Database from './db.js';
+import bcrypt from 'bcrypt';
 
 export class Trainer extends Model {}
 
@@ -35,7 +36,6 @@ Trainer.init(
     },
     roles: {
       type: DataTypes.STRING(50),
-      defaultValue: 'USER',
     },
   },
   {
@@ -130,14 +130,17 @@ Exchange.init(
         key: 'id',
       },
     },
+    status: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
   },
   {
     sequelize: Database,
-    modelName: 'trainer',
+    modelName: 'exchange',
     timestamps: false,
   },
 );
-
 Trainer.hasMany(Pokemon, { as: 'pokemon', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 Pokemon.belongsTo(Trainer, {
   as: 'trainer',

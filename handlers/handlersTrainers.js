@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import sequelize from 'sequelize';
-import {Trainer} from './model/trainer.js';
+import {Trainer} from '../model/trainer.js';
 
 const getTrainer = async (req, res) => {
   const { id } = req.params;

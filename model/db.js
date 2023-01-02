@@ -19,6 +19,7 @@ const Database = new Sequelize(
     await Database.sync();
     console.log('Database is ready');
   } catch (error) {
+    console.log(error);
     console.log('database is down');
   }
 })();
