@@ -7,7 +7,7 @@
     "start": "NODE_ENV=prod node ./index.js",
     "start:local": "NODE_ENV=local node ./index.js",
     "test": "mocha",
-    "lint": "npx eslint ./*.js ./config/config.js ./model/*  ./handlers/* --fix"
+    "lint": "npx eslint ./*.js ./config/config.js ./model/*  ./handlers/* "
   },
   "type": "module",
   "keywords": [],
