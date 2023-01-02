@@ -1,4 +1,4 @@
-import {Pokemon } from '../model/trainer.js';
+import { Pokemon } from '../model/trainer.js';
 
 const getPokemon = async (req, res) => {
   try {

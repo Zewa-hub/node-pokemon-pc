@@ -64,7 +64,7 @@ const authorize = async (req, res) => {
       error: 'No redirect URI provided',
     });
   }
-  if (!acceptedScopes.includes(queryParams.scopes)) {
+  if (!acceptedScopes.includes(queryParams.scope)) {
     return res.status(400).send('No user scopes provided');
   }
   return res.redirect(`${queryParams.redirect_uri}?authorization_code:${authorizationCode}`);

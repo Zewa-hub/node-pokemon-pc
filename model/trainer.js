@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { DataTypes, Model } from 'sequelize';
-import Database from './db.js';
 import bcrypt from 'bcrypt';
+import Database from './db.js';
 
 export class Trainer extends Model {}
 
@@ -141,7 +141,16 @@ Exchange.init(
     timestamps: false,
   },
 );
+
 Trainer.hasMany(Pokemon, { as: 'pokemon', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 Pokemon.belongsTo(Trainer, {
   as: 'trainer',
 });
+
+try {
+  await Trainer.create({
+    firstName: 'Leo', lastName: 'Pokemaniac', login: 'leopkmn', password: bcrypt.hashSync('cynthia', 5), age: 23, roles: 'ADMIN',
+  });
+} catch (error) {
+  console.log('ADMIN déja présent en base');
+}

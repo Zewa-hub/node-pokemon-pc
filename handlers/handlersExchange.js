@@ -19,7 +19,7 @@ const exchangePurpose = async (req, res) => {
       },
     });
     if (!pokemonReceiver || !pokemonSender) {
-      return res.send(404)
+      return res.status(404)
         .send('Pokemon not found');
     }
     const { id } = await Exchange.create({
@@ -29,8 +29,7 @@ const exchangePurpose = async (req, res) => {
       idPokemonReceiver,
       status: 'SENT',
     });
-    return res.status(201)
-      .send(id);
+    return res.status(200).send({ id });
   } catch (err) {
     return res.status(500).send(err);
   }
@@ -46,29 +45,34 @@ const exchangeResponse = async (req, res) => {
         idReceiver: res.locals.requestor.id,
       },
     });
-    if (!exchange) return res.status(404).send('Exchange not found');
+    if (!exchange || exchange.status !== 'SENT') return res.status(404).send('Exchange not found');
+    const pokemonSender = await Pokemon.findOne({
+      where: {
+        id: exchange.idPokemonSender,
+        trainerId: exchange.idSender,
+      },
+    });
+    const pokemonReceiver = await Pokemon.findOne({
+      where: {
+        id: exchange.idPokemonReceiver,
+        trainerId: exchange.idReceiver,
+      },
+    });
+    if (!pokemonReceiver || !pokemonSender) {
+      return res.status(404)
+        .send('Pokemon not found');
+    }
     if (!accept) {
       exchange.status = 'REFUSED';
       await exchange.save();
       return res.status(201).send('Exchange refused');
     }
-
-    const pokemonA = await Pokemon.findOne({
-      where: {
-        id: exchange.idPokemonSender,
-      },
-    });
-    const pokemonB = await Pokemon.findOne({
-      where: {
-        id: exchange.idPokemonReceiver,
-      },
-    });
-    pokemonA.trainerId = exchange.idReceiver;
-    pokemonB.trainerId = exchange.idSender;
+    pokemonSender.trainerId = exchange.idReceiver;
+    pokemonReceiver.trainerId = exchange.idSender;
     exchange.status = 'ACCEPTED';
 
-    await pokemonA.save();
-    await pokemonB.save();
+    await pokemonSender.save();
+    await pokemonReceiver.save();
     await exchange.save();
     return res.status(201).send('Exchange accepted');
   } catch (err) {

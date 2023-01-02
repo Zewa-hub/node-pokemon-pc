@@ -1,0 +1,458 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "contact": {
+      "name": "Abdelaziz Mansouri",
+      "email": "abdelaziz.mansouri@epita.fr"
+    },
+    "title": "Pokemon PC",
+    "description": "Tout est dans le nom juste au dessus"
+  },
+  "host": "localhost",
+  "basePath": "/",
+  "tags": [{
+    "name": "Trainer",
+    "description": "CRUD API for Trainer"
+  },
+    {
+      "name": "Pokemon",
+      "description": "Management API for Pokemon (only update / delete and read) "
+    },
+    {
+      "name": "Security",
+      "description": "Security routes for Oauth2"
+    },
+    {
+      "name": "Exchange",
+      "description": "API for exchange between two consenting Trainer"
+    }
+  ],
+  "paths": {
+    "/oauth/token": {
+      "post": {
+        "tags": ["Security"],
+        "description": "Route de recupération des tokens d'identification",
+        "parameters": [{
+          "name": "client_id",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+          {
+            "name": "client_secret",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization_code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/authorize": {
+      "get": {
+        "description": "Route de redirection pour une connexion type Oauth2",
+        "tags": ["Security"],
+        "parameters": [{
+          "name": "client_id",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/trainer/{id}": {
+      "get": {
+        "tags": ["Trainer"],
+        "description": "Récupération des données d'un utilisateur",
+        "security": [{
+          "bearerAuth": []
+        }],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "description": "Modification des données d'un utilisateur",
+        "tags": ["Trainer"],
+        "security": [{
+          "bearerAuth": []
+        }],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "Suppression d'un utilisateur",
+        "tags": ["Trainer"],
+        "security": [{
+          "bearerAuth": []
+        }],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "description": "Création d'un utilisateur",
+        "tags": ["Trainer"],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "example": "any"
+                  },
+                  "lastName": {
+                    "example": "any"
+                  },
+                  "age": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  },
+                  "login": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pokemon": {
+      "get": {
+        "description": "Récupération de tout les pokémons de l'utilisateur connecté",
+        "tags": ["Pokemon"],
+        "security": [{
+          "bearerAuth": []
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/pokemon/{id}": {
+      "patch": {
+        "tags": ["Pokemon"],
+        "description": "Modification des données d'un pokemon via son id",
+        "security": [{
+          "bearerAuth": []
+        }],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Pokemon"],
+        "description": "Suppression d'un pokemon",
+        "security": [{
+          "bearerAuth": []
+        }],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/exchange/{id}": {
+      "post": {
+        "tags": ["Exchange"],
+        "description": "Initiation d'une demande d'échange entre 2 dresseurs",
+        "security": [{
+          "bearerAuth": []
+        }],
+        "parameters": [{
+          "name": "id",
+          "description": "id of the pokemon owned by the connected trainer",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idTrainer": {
+                    "type": "integer",
+                    "example": "1"
+                  },
+                  "idPokemon": {
+                    "type": "integer",
+                    "example": "1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Exchange"],
+        "description": "Réponse pour un echange",
+        "security": [{
+          "bearerAuth": []
+        }],
+        "parameters": [{
+          "name": "id",
+          "description": "exchange's id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accept": {
+                    "type": "boolean",
+                    "example": "true"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

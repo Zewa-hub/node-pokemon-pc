@@ -7,7 +7,7 @@
     "start": "NODE_ENV=prod node ./index.js",
     "start:local": "NODE_ENV=local node ./index.js",
     "test": "mocha",
-    "lint": "npx eslint ./*.js ./config/config.js ./model/*  --fix"
+    "lint": "npx eslint ./*.js ./config/config.js ./model/*  ./handlers/* --fix"
   },
   "type": "module",
   "keywords": [],
@@ -19,7 +19,8 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.27.0"
+    "sequelize": "^6.27.0",
+    "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
