@@ -6,7 +6,7 @@ const acceptedScopes = ['USER', 'ADMIN'];
 const authorizationCode = 'OAUTH_TEST_APP_ACCEPTED';
 const acceptedClientId = 'OAUTH_TEST_APP';
 const acceptedClientSecret = 'OAUTH_TEST_APP_SECRET';
-
+//TODO: Go see for refresh token and cleanup the code + adding more scopes 
 const getToken = async (req, res) => {
   const queryParams = req.query;
 
